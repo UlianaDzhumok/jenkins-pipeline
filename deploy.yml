@@ -7,20 +7,20 @@
 
   tasks:
     - name: Deploy app.
-      kubernetes:
+     k8s:
         definition: '{{ item }}'
         kubeconfig: '{{ kubernetes_kubeconfig }}'
         state: present
-      loop:
+     loop:
         - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
       
     - name: Get load balancer DNS name.
-      kubernetes_info:
+     k8s_info:
         kubeconfig: '{{ kubernetes_kubeconfig }}'
         kind: Service
         name: app
         namespace: default
-      register: app_svc
+     register: app_svc
 
     - name: Set the load balancer URL as a fact.
       set_fact:
