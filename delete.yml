@@ -39,9 +39,9 @@
         - app_route53_domain in route53_record['ResourceRecordSets'][0]['Name']
 
     - name: Delete app resources.
-      k8s:
+      kubernetes:
         definition: '{{ item }}'
-        kubeconfig: '{{ k8s_kubeconfig }}'
+        kubeconfig: '{{ kubernetes_kubeconfig }}'
         state: absent
       loop:
         - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"

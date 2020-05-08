@@ -14,14 +14,29 @@
       loop:
         - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
       
-
     - name: Get load balancer DNS name.
-      k8s_info:
+      kubernetess_info:
         kubeconfig: '{{ kubernetes_kubeconfig }}'
         kind: Service
         name: app
         namespace: default
       register: app
+
+    - name: Deploy App.
+      kubernetess:
+        definition: '{{ item }}'
+        kubeconfig: '{{ kubernetess_kubeconfig }}'
+        state: present
+      loop:
+        - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
+      
+    - name: Get load balancer DNS name.
+      kubernetes_info:
+        kubeconfig: '{{ kubernetes_kubeconfig }}'
+        kind: Service
+        name: app
+        namespace: default
+      register: app_svc
 
     - name: Set the load balancer URL as a fact.
       set_fact:
