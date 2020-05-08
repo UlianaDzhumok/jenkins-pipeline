@@ -91,6 +91,7 @@ Resources:
       AvailabilityZone:
         Fn::Sub: '${Region}a'
       CidrBlock: 172.16.0.0/18
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: kubernetes-subnet-1
@@ -114,6 +115,7 @@ Resources:
       AvailabilityZone:
         Fn::Sub: '${Region}b'
       CidrBlock: 172.16.64.0/18
+      MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
           Value: kubernetes-subnet-2
