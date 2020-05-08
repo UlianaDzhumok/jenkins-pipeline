@@ -1,4 +1,9 @@
 pipeline {
+     environment {
+        registry = "udzhumok/dog-classifier"
+        registryCredential = 'DockerHub'
+        dockerImage = ''
+     }
      agent any
      stages {
          stage('Setup Environment') {
@@ -15,21 +20,18 @@ pipeline {
          }
          stage('Test') {
              steps {
-                 sh 'make test-func'
-                 sh 'make test-perf'
+                 sh 'make test'
              }
          }             
          stage('Publish') {
              steps {
-                 sh 'docker build --tag=dog-classifier .'
-                 sh 'docker image ls'
-                 sh 'docker run -p 8000:80 dog-classifier'
-                 sh 'docker login --username udzhumok'
-                 sh 'docker tag dog-classifier udzhumok/dog-classifier:demo'
-                 sh 'docker push udzhumok/dog-classifier:demo'
-                 sh 'docker stop $(docker ps -a -q)'
-                 sh 'docker rm $(docker ps -a -q)'
-                 sh 'docker system prune -a'
+                 script {
+                    dockerImage=docker.build registry + ":$BUILD_NUMBER"
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                 }
+                 sh "docker rmi $registry:$BUILD_NUMBER"
              }
          }
          stage('Deploy') {
