@@ -47,9 +47,9 @@ pipeline {
                 sh 'curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp'
                 sh 'sudo mv /tmp/eksctl /usr/local/bin'
                 sh 'eksctl version'
-                sh 'eksctl --region us-east-2 update-kubeconfig --name kubernetes'
-                sh 'kubectl config use-context'
+                sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes'
                 sh 'export KUBECONFIG=~/.kube/kubernetes'
+                sh 'kubectl config use-context'
                 sh 'ansible-playbook -i inventory deploy.yml'
             }
          }                     
