@@ -43,7 +43,8 @@ pipeline {
                 sh 'sudo apt-get install -y kubectl'
                 sh 'sudo apt-get install ansible'
                 sh 'pip3 install boto'
-                sh 'ansible-playbook -i inventory deploy.yml'
+                sh 'ansible-playbook -i inventory container.yml'
+                sh 'docker ps'
             }
          }                     
      }
