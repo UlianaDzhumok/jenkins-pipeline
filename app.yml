@@ -7,7 +7,6 @@ metadata:
   labels:
     app: app
 spec:
-  replicas: 2
   selector:
    app: app
    version: v1.0.0
