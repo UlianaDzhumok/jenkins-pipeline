@@ -11,6 +11,8 @@ install:
 		pip3 install -r requirements.txt
 	sudo -S wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
 	sudo -S chmod +x /bin/hadolint
+	sudo apt-get install docker.io
+	sudo chmod 777 /var/run/docker.sock
 
 test-func:
 	# Additional, optional, tests could go here
