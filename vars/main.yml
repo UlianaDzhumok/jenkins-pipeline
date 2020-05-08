@@ -1,0 +1,26 @@
+---
+# AWS Settings.
+aws_environment: true
+aws_region: us-east-2
+aws_profile: default
+
+# This variable will be populated during playbook runs.
+stack_outputs: {}
+
+# EKS Cluster settings.
+eks_cluster_name: kubernetes-cluster
+# See: https://docs.aws.amazon.com/eks/latest/userguide/platform-versions.html
+eks_kubernetes_version: "1.16"
+
+# Nodegroup settings.
+eks_nodegroup_name: kubernetes-nodegroup
+eks_nodegroup_instance_type: t2.small
+eks_nodegroup_cluster_size: 2
+
+# Domain settings for Route53 DNS.
+app_route53_zone: '' # e.g. 'app.com'
+app_route53_domain: '' # e.g. 'dogclassifier.app.com'
+
+# Kubernetes settings.
+k8s_kubeconfig: ~/.kube/eks-example
+k8s_no_log: true

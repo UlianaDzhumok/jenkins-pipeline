@@ -54,10 +54,9 @@ pipeline {
                         echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}">>~/.boto
                     '''
                 }
-                sh 'git clone https://github.com/kubernetes-incubator/kubespray'
-                sh 'ansible-playbook -i inventory.cfg -b -v cluster.yml'
-                sh 'kubectl create -f deployment.yml'
-                sh 'kubectl get pods'
+                sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes --kubeconfig ~/.kube/kubernetes'
+                sh 'export KUBECONFIG=~/.kube/kubernetes'
+                sh 'ansible-playbook -i inventory deploy.yml'
             }
          }                     
      }
