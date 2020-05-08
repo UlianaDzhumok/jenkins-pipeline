@@ -15,8 +15,7 @@ pipeline {
          }
          stage('Test') {
              steps {
-                 sh 'make test-func'
-                 sh 'make test-perf'
+                 sh 'make test'
              }
          }             
          stage('Publish') {

@@ -11,15 +11,11 @@ install:
 		pip3 install -r requirements.txt
 	sudo -S wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
 	sudo -S chmod +x /bin/hadolint
-	
-test-func:
-	# Additional, optional, tests could go here
-	#python3 app.py --dir test_data/functional/
-	
-test-perf:
-	# Additional, optional, tests could go here
-	#python3 app.py --dir test_data/performance/
 
+test:
+	# Additional, optional, tests could go here
+	python3 app.py
+	
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
