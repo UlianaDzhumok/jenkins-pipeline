@@ -18,12 +18,12 @@ pipeline {
                  aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'json'
              }
          }
-         stage('Test') {
+         stage('Test Application') {
              steps {
                  sh 'make test'
              }
          }             
-         stage('Publish') {
+         stage('Publish Docker image') {
              steps {
                  script {
                     dockerImage=docker.build registry + ":$BUILD_NUMBER"
