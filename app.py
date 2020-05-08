@@ -278,7 +278,6 @@ def check_calculating_results(results_dic, results_stats_dic):
         # in results_stats_dic
     
         # Initialize counters to zero and number of images total
-        n_images = len(results_dic)
         n_pet_dog = 0
         n_class_cdog = 0
         n_class_cnotd = 0
@@ -333,29 +332,7 @@ def check_calculating_results(results_dic, results_stats_dic):
               results_stats_dic['n_notdogs_img'], results_stats_dic['pct_correct_dogs'],
               results_stats_dic['pct_correct_notdogs'],
               results_stats_dic['pct_correct_breed']))
-    
-def adjust_results4_isadog(results_dic):
-             
-    dognames=set()
-    
-    with open("dognames.txt") as file:
-        for line in file:
-            dognames.add(line.lower().strip())
-    
-    for value in results_dic.items():
-        if value[0] in dognames:
-            value.append(1)
-        else:
-            value.append(0)
             
-        classifier_labels=value[1].lower().strip().split(",")
-        classifier_flag=0
-        
-        for label in classifier_labels:
-            if label.strip() in dognames:
-                classifier_flag=1      
-        value.append(classifier_flag)
-        
 def calculates_results_stats(results_dic):
     
     results_stats_dic=dict()
@@ -367,7 +344,7 @@ def calculates_results_stats(results_dic):
     n_correct_notdogs=0
     n_correct_breed=0
     
-    for key,value in results_dic.items():
+    for value in results_dic.items():
         if value[2]==1:
             n_match+=1
         
@@ -468,7 +445,27 @@ def main():
     # Adjusts the results dictionary to determine if classifier correctly 
     # classified images as 'a dog' or 'not a dog'. This demonstrates if 
     # model can correctly classify dog images as dogs (regardless of breed)
-    adjust_results4_isadog(results)
+    #adjust_results4_isadog(results)
+
+    dognames=set()
+    
+    with open("dognames.txt") as file:
+        for line in file:
+            dognames.add(line.lower().strip())
+    
+    for value in results.items():
+        if value[0] in dognames:
+            value.append(1)
+        else:
+            value.append(0)
+            
+        classifier_labels=value[1].lower().strip().split(",")
+        classifier_flag=0
+        
+        for label in classifier_labels:
+            if label.strip() in dognames:
+                classifier_flag=1      
+        value.append(classifier_flag)
 
     # Function that checks Results Dictionary for is-a-dog adjustment using results
     #check_classifying_labels_as_dogs(results)
