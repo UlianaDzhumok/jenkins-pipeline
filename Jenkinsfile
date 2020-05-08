@@ -36,7 +36,11 @@ pipeline {
          }
          stage('Deploy Kubernetes Cluster') {
              steps {
-                sh 'sudo apt-get install kubectl'
+                sh 'curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -'
+                sh 'sudo touch /etc/apt/sources.list.d/kubernetes.list' 
+                sh 'echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list'
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install -y kubectl'
                 sh 'sudo apt-get install ansible'
                 sh 'pip3 install boto'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: 'aws-creds',accessKeyVariable: 'AWS_ACCESS_KEY_ID',secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
