@@ -34,9 +34,26 @@ pipeline {
                  sh "docker rmi $registry:$BUILD_NUMBER"
              }
          }
-         stage('Deploy') {
+         stage('Deploy Kubernetes Cluster') {
              steps {
-                sh 'echo "Hello World"'                              
+                sh 'sudo apt-get install kubectl'
+                sh 'sudo apt-get install ansible'
+                sh 'pip3 install boto'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: 'aws-creds',accessKeyVariable: 'AWS_ACCESS_KEY_ID',secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
+                    sh '''
+                        mkdir -p ~/.aws
+                        echo "[default]" >~/.aws/credentials
+                        echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}">>~/.aws/credentials
+                        echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}">>~/.aws/credentials
+                        echo "[default]" >~/.boto
+                        echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}">>~/.boto
+                        echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}">>~/.boto
+                    '''
+                }
+                sh 'git clone https://github.com/kubernetes-incubator/kubespray'
+                sh 'ansible-playbook -i inventory.cfg -b -v cluster.yml'
+                sh 'kubectl create -f deployment.yml'
+                sh 'kubectl get pods'
             }
          }                     
      }
