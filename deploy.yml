@@ -15,7 +15,7 @@
         - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
       
     - name: Get load balancer DNS name.
-      kubernetess_info:
+      kubernetes_info:
         kubeconfig: '{{ kubernetes_kubeconfig }}'
         kind: Service
         name: app
