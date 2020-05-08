@@ -42,8 +42,7 @@ pipeline {
                 sh 'sudo apt-get update'
                 sh 'sudo apt-get install -y kubectl'
                 sh 'sudo apt-get install ansible'
-                sh 'pip3 install boto'
-                sh 'pip3 install botocore'
+                sh 'pip3 install --user boto3 botocore'
                 sh 'ansible-playbook -i inventory main.yml'
                 sh 'pip3 install awscli --upgrade --user'
                 sh 'curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp'
@@ -58,7 +57,7 @@ pipeline {
             }
          }
          stage('Deploy application') {
-             steps {
+             steps {  
                 sh 'ansible-playbook -i inventory deploy.yml'
             }
          }                     
