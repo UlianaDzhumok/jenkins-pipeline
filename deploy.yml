@@ -6,14 +6,6 @@
     - vars/main.yml
 
   tasks:
-    - name: Deploy app.
-      k8s:
-        definition: '{{ item }}'
-        kubeconfig: '{{ kubernetes_kubeconfig }}'
-        state: present
-      loop:
-        - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
-      
     - name: Get load balancer DNS name.
       k8s_info:
         kubeconfig: '{{ kubernetes_kubeconfig }}'

@@ -57,6 +57,8 @@ pipeline {
          }
          stage('Deploy application') {
              steps {  
+                sh '$ kubectl apply -f app.yml'
+                sh 'kubectl get pods'
                 sh 'ansible-playbook -i inventory deploy.yml'
             }
          }                     
