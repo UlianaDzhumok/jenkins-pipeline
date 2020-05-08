@@ -1,0 +1,67 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: Ensure VPC exists via CloudFormation.
+      cloudformation:
+        stack_name: kubernetes-vpc
+        state: present
+        region: "{{ aws_region }}"
+        profile: "{{ aws_profile }}"
+        disable_rollback: false
+        template: cloudformation/vpc.yml
+        template_parameters:
+          Region: "{{ aws_region }}"
+        tags:
+          stack: kubernetes-vpc
+          application: kubernetes
+      register: vpc_info
+
+    - name: Add to stack_outputs.
+      set_fact:
+        stack_outputs: "{{ stack_outputs | combine(vpc_info['stack_outputs']) }}"
+
+    - name: Ensure EKS Cluster exists via CloudFormation.
+      cloudformation:
+        stack_name: kubernetes-cluster
+        state: present
+        region: "{{ aws_region }}"
+        profile: "{{ aws_profile }}"
+        disable_rollback: false
+        template: cloudformation/kubernetes-cluster.yml
+        template_parameters:
+          ClusterName: "{{ eks_cluster_name }}"
+          KubernetesVersion: "{{ eks_kubernetes_version }}"
+          Subnets: "{{ stack_outputs.Subnets }}"
+          VpcId: "{{ stack_outputs.VpcId }}"
+        tags:
+          stack: kubernetes-cluster
+          application: kubernetes
+      register: kubernetes_cluster_info
+
+    - name: Add to stack_outputs.
+      set_fact:
+        stack_outputs: "{{ stack_outputs | combine(kubernetes_cluster_info['stack_outputs']) }}"
+
+    - name: Ensure EKS Node Group exists via CloudFormation.
+      cloudformation:
+        stack_name: kubernetes-nodegroup
+        state: present
+        region: "{{ aws_region }}"
+        profile: "{{ aws_profile }}"
+        disable_rollback: false
+        template: cloudformation/kubernetes-nodegroup.yml
+        template_parameters:
+          ClusterName: "{{ eks_cluster_name }}"
+          NodeGroupName: "{{ eks_nodegroup_name }}"
+          NodeGroupDesiredCapacity: "{{ eks_nodegroup_cluster_size }}"
+          NodeInstanceType: "{{ eks_nodegroup_instance_type }}"
+          Subnets: "{{ stack_outputs.Subnets }}"
+        tags:
+          stack: kubernetes-nodegroup
+          application: kubernetes
+      register: kubernetes_nodegroup_info

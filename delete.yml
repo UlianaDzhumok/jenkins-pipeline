@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: Get Route53 hosted zones (if configured).
+      route53_zone:
+        zone: '{{ app_route53_zone }}'
+      register: hosted_zone
+      when: app_route53_zone != ''
+
+    - name: Get Route53 record (if configured).
+      route53_info:
+        profile: "{{ aws_profile }}"
+        type: A
+        query: record_sets
+        start_record_name: '{{ app_route53_domain }}'
+        hosted_zone_id: '{{ hosted_zone.zone_id }}'
+        hosted_zone_method: list_by_name
+      register: route53_record
+      when: app_route53_domain != ''
+
+    - name: Delete Route53 record (if found).
+      route53:
+        profile: "{{ aws_profile }}"
+        zone: '{{ app_route53_zone }}'
+        record: '{{ app_route53_domain }}.'
+        state: absent
+        type: A
+        ttl: 300
+        value: "{{ route53_record['ResourceRecordSets'][0]['AliasTarget']['DNSName'] }}"
+        alias: true
+        alias_hosted_zone_id: "{{ route53_record['ResourceRecordSets'][0]['AliasTarget']['HostedZoneId'] }}"
+      when:
+        - route53_record['ResourceRecordSets'][0]['AliasTarget'] is defined
+        - app_route53_domain in route53_record['ResourceRecordSets'][0]['Name']
+
+    - name: Delete app resources.
+      kubernetes:
+        definition: '{{ item }}'
+        kubeconfig: '{{ kubernetes_kubeconfig }}'
+        state: absent
+      loop:
+        - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
+
+    - name: Pause execution for two minutes for resource deletion.
+      pause:
+        minutes: 2
+
+    - name: Delete CloudFormation stacks.
+      cloudformation:
+        stack_name: "{{ item }}"
+        state: absent
+        region: "{{ aws_region }}"
+        profile: "{{ aws_profile }}"
+      with_items:
+        - kubernetes-nodegroup
+        - kubernetes-cluster
+        - kubernetes-vpc
