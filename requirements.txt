@@ -1,7 +1,6 @@
-pillow==5.2.0
-torch==0.4.0
-torchvision==0.2.1
-numpy==1.16.6
-pandas==0.24.2
-python-dateutil==2.8.0
-pylint==1.9.5
+pillow==7.1.2
+torch==1.4.0
+torchvision==0.6.0
+numpy==1.18.4
+pandas==1.0.3
+pylint==2.5.2
