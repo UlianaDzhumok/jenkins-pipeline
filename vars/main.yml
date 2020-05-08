@@ -22,5 +22,4 @@ app_route53_zone: '' # e.g. 'app.com'
 app_route53_domain: '' # e.g. 'dogclassifier.app.com'
 
 # Kubernetes settings.
-k8s_kubeconfig: ~/.kube/eks-example
-k8s_no_log: true
+kubernetes_kubeconfig: ~/.kube/kubernetes

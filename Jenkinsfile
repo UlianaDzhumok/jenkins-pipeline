@@ -34,7 +34,7 @@ pipeline {
                  sh "docker rmi $registry:$BUILD_NUMBER"
              }
          }
-         stage('Deploy Cluster') {
+         stage('Create Cluster') {
              steps {
                 sh 'curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -'
                 sh 'sudo touch /etc/apt/sources.list.d/kubernetes.list' 
@@ -43,8 +43,12 @@ pipeline {
                 sh 'sudo apt-get install -y kubectl'
                 sh 'sudo apt-get install ansible'
                 sh 'pip3 install boto'
-                sh 'ansible-playbook -i inventory container.yml'
-                sh 'docker ps'
+                sh 'ansible-playbook -i inventory main.yml'
+            }
+         }
+         stage('Deploy application') {
+             steps {
+                sh 'echo "Hello World" '
             }
          }                     
      }
