@@ -54,7 +54,6 @@ pipeline {
                         echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}">>~/.boto
                     '''
                 }
-                sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes --kubeconfig ~/.kube/kubernetes'
                 sh 'export KUBECONFIG=~/.kube/kubernetes'
                 sh 'ansible-playbook -i inventory deploy.yml'
             }
