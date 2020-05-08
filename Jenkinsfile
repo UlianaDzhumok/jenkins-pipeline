@@ -27,7 +27,15 @@ pipeline {
                  sh 'docker login --username udzhumok'
                  sh 'docker tag dog-classifier udzhumok/dog-classifier:demo'
                  sh 'docker push udzhumok/dog-classifier:demo'
+                 sh 'docker stop $(docker ps -a -q)'
+                 sh 'docker rm $(docker ps -a -q)'
+                 sh 'docker system prune -a'
              }
-         }                 
+         }
+         stage('Deploy') {
+             steps {
+                              
+            }
+         }                     
      }
 }
