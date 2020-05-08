@@ -34,7 +34,7 @@ pipeline {
                  sh "docker rmi $registry:$BUILD_NUMBER"
              }
          }
-         stage('Deploy Kubernetes Cluster') {
+         stage('Deploy Cluster') {
              steps {
                 sh 'curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -'
                 sh 'sudo touch /etc/apt/sources.list.d/kubernetes.list' 
