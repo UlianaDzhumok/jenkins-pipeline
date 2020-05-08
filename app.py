@@ -325,14 +325,7 @@ def check_calculating_results(results_dic, results_stats_dic):
                     # NOT dog (classifier label)
                     if results_dic[key][4] == 0:
                         n_class_cnotd += 1
-
-                    
-        # calculates statistics based upon counters from above
-        n_pet_notd = n_images - n_pet_dog
-        pct_corr_dog = ( n_class_cdog / n_pet_dog )*100
-        pct_corr_notdog = ( n_class_cnotd / n_pet_notd )*100
-        pct_corr_breed = ( n_match_breed / n_pet_dog )*100
-    
+   
         # prints calculated statistics
         print("\n\nGeneral statistics:")
         print("\nNumber of images: {:2d}  \nNumber of images with dogs: {:2d}  \nNumber of other images: {:2d} \n\nCorrect dog classification: {:5.1f}% \nCorrect not dog classification: {:5.1f}%  \nCorrect dog's breed classification: {:5.1f}%\n".format(
@@ -349,7 +342,7 @@ def adjust_results4_isadog(results_dic):
         for line in file:
             dognames.add(line.lower().strip())
     
-    for key, value in results_dic.items():
+    for value in results_dic.items():
         if value[0] in dognames:
             value.append(1)
         else:
@@ -416,8 +409,7 @@ def calculates_results_stats(results_dic):
         
     return results_stats_dic
 
-def print_results(results_dic, results_stats_dic, model, 
-                  print_incorrect_dogs = False, print_incorrect_breed = False):
+def print_results(results_stats_dic):
 
     print("\nClassification results:")
 
@@ -452,7 +444,7 @@ def main():
     results = get_pet_labels(in_arg.dir)
 
     # Function that checks Pet Images in the results Dictionary using results     
-    check_creating_pet_image_labels(results)
+    #check_creating_pet_image_labels(results)
 
 
     # Classify_images function within the file classiy_images.py
@@ -466,7 +458,7 @@ def main():
     classify_images(in_arg.dir, results)
 
     # Function that checks Results Dictionary using results     
-    check_classifying_images(results)    
+    #check_classifying_images(results)    
 
     # Adjust_results4_isadog function within the file adjust_results4_isadog.py
     # Once the adjust_results4_isadog function has been defined replace 'None' 
@@ -479,7 +471,7 @@ def main():
     adjust_results4_isadog(results)
 
     # Function that checks Results Dictionary for is-a-dog adjustment using results
-    check_classifying_labels_as_dogs(results)
+    #check_classifying_labels_as_dogs(results)
 
     # Calculates_results_stats function within the file calculates_results_stats.py
     # This function creates the results statistics dictionary that contains a
@@ -491,13 +483,13 @@ def main():
 
     # Function that checks Results Statistics Dictionary using results_stats
 
-    check_calculating_results(results, results_stats)
+    #check_calculating_results(results, results_stats)
 
 
     # Print_results function within the file print_results.py
     # Prints summary results, incorrect classifications of dogs (if requested)
     # and incorrectly classified breeds (if requested)
-    print_results(results, results_stats, "resnet", True, True)
+    print_results(results_stats)
     
     # Measure total program runtime by collecting end time & prints it in hh:mm:ss format
     end_time = time()
