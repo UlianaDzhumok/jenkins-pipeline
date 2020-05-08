@@ -12,6 +12,13 @@ pipeline {
                  sh 'make lint'
                  aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'json'
              }
+         }
+         stage('Test') {
+             steps {
+                 sh 'make test-func'
+                 sh 'make test-perf'
+             }
          }             
+             
      }
 }

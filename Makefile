@@ -9,10 +9,14 @@ install:
 	sudo -S wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
 	sudo -S chmod +x /bin/hadolint
 
-test:
+test-func:
 	# Additional, optional, tests could go here
-	#python -m pytest -vv --cov=myrepolib tests/*.py
-	#python -m pytest --nbval notebook.ipynb
+	python3 app.py --dir test_data/functional/
+	
+test-perf:
+	# Additional, optional, tests could go here
+	python3 app.py --dir test_data/performance/
+
 
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
@@ -23,5 +27,5 @@ lint:
 	# This should be run from inside a virtualenv
 	pylint --disable=R,C,W1203,W1309,E0401,W0622 app.py
 
-all: install lint test
+all: install lint test-func test-perf
 
