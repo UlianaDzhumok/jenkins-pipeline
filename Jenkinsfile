@@ -41,7 +41,7 @@ pipeline {
                 sh 'echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list'
                 sh 'sudo apt-get update'
                 sh 'sudo apt-get install -y kubectl'
-                sh 'apt install ansible'
+                sh 'sudo apt-get install ansible'
                 sh 'pip3 install boto'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: 'aws-creds',accessKeyVariable: 'AWS_ACCESS_KEY_ID',secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
                     sh '''
