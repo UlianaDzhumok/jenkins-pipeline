@@ -7,11 +7,11 @@ metadata:
   labels:
     app: app
 spec:
-  selector:
-   app: app
-   version: v1.0.0
   ports:
     - port: 80
+  selector:
+    app: app
+    version: 1.0.0
   type: LoadBalancer
 
 ---
@@ -24,10 +24,20 @@ metadata:
     app: app
 spec:
   selector:
-   app: app
-   version: v1.0.0
+    matchLabels:
+      app: app
+      version: 1.0.0
+  strategy:
+    type: Recreate
   template:
+    metadata:
+      labels:
+        app: app
+        version: 1.0.0  
     spec:
-      image: udzhumok/dog-classifier:latest
+      containers:
+      - image: udzhumok/dog-classifier:latest
+        name: app
         ports:
-        - containerPort: 8080
+        - containerPort: 80
+          name: app
