@@ -17,7 +17,6 @@ test-perf:
 	# Additional, optional, tests could go here
 	python3 app.py --dir test_data/performance/
 
-
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles

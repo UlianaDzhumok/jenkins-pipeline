@@ -19,6 +19,15 @@ pipeline {
                  sh 'make test-perf'
              }
          }             
-             
+         stage('Publish') {
+             steps {
+                 sh 'docker build --tag=dog-classifier .'
+                 sh 'docker image ls'
+                 sh 'docker run -p 8000:80 dog-classifier'
+                 sh 'docker login --username udzhumok'
+                 sh 'docker tag dog-classifier udzhumok/dog-classifier:demo'
+                 sh 'docker push udzhumok/dog-classifier:demo'
+             }
+         }                 
      }
 }
