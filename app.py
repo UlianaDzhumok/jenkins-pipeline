@@ -138,7 +138,7 @@ def classifier(img_path):
         data = Variable(img_tensor, volatile = True) 
 
     # apply model to input
-    model = models.vgg16(pretrained=True)
+    model = models.resnet18(pretrained=True)
     
     # puts model in evaluation mode
     # instead of (default)training mode
@@ -497,7 +497,7 @@ def main():
     # Print_results function within the file print_results.py
     # Prints summary results, incorrect classifications of dogs (if requested)
     # and incorrectly classified breeds (if requested)
-    #print_results(results, results_stats, "vgg", True, True)
+    #print_results(results, results_stats, "resnet", True, True)
     
     # Measure total program runtime by collecting end time & prints it in hh:mm:ss format
     end_time = time()
