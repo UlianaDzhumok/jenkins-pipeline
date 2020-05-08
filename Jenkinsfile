@@ -3,8 +3,8 @@ pipeline {
      stages {
          stage('Setup') {
              steps {
-                 make setip
-                 make install
+                 sh 'make setup'
+                 sh 'make install'
              }
          }         
      }
