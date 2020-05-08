@@ -52,7 +52,7 @@ pipeline {
                     sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes-cluster'
                 }
                 sh 'export KUBECONFIG=~/.kube/kubernetes-cluster'
-                sh 'kubectl config use-context'
+                sh 'kubectl config use-context kubernetes-cluster'
                 sh 'kubectl get svc'
             }
          }
