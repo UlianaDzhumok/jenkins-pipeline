@@ -1,6 +1,7 @@
 setup:
 	python3 -m venv ~/.jenkins-pipeline
-	source ~/.jenkins-pipeline/bin/activate
+	. ~/.jenkins-pipeline/bin/activate
+
 install:
 	# This should be run from inside a virtualenv
 	pip install --upgrade pip &&\
