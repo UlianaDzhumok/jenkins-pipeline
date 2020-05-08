@@ -43,17 +43,12 @@ pipeline {
                 sh 'sudo apt-get install -y kubectl'
                 sh 'sudo apt-get install ansible'
                 sh 'pip3 install boto'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: 'aws-creds',accessKeyVariable: 'AWS_ACCESS_KEY_ID',secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                    sh '''
-                        mkdir -p ~/.aws
-                        echo "[default]" >~/.aws/credentials
-                        echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}">>~/.aws/credentials
-                        echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}">>~/.aws/credentials
-                        echo "[default]" >~/.boto
-                        echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}">>~/.boto
-                        echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}">>~/.boto
-                    '''
-                }
+                sh 'pip3 install awscli --upgrade --user'
+                sh 'curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp'
+                sh 'sudo mv /tmp/eksctl /usr/local/bin'
+                sh 'eksctl version'
+                sh 'eksctl --region us-east-2 update-kubeconfig --name kubernetes'
+                sh 'kubectl config use-context'
                 sh 'export KUBECONFIG=~/.kube/kubernetes'
                 sh 'ansible-playbook -i inventory deploy.yml'
             }
