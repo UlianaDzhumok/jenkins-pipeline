@@ -7,7 +7,7 @@
 
   tasks:
     - name: Deploy app.
-      k8s:
+      kubernetes:
         definition: '{{ item }}'
         kubeconfig: '{{ kubernetes_kubeconfig }}'
         state: present
@@ -15,7 +15,7 @@
         - "{{ lookup('template', 'app.yml') | from_yaml_all | list }}"
       
     - name: Get load balancer DNS name.
-      k8s_info:
+      kubernetes_info:
         kubeconfig: '{{ kubernetes_kubeconfig }}'
         kind: Service
         name: app
