@@ -49,9 +49,9 @@ pipeline {
                 sh 'sudo mv /tmp/eksctl /usr/local/bin'
                 sh 'eksctl version'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',credentialsId: 'aws-creds',accessKeyVariable: 'AWS_ACCESS_KEY_ID',secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                    sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes'
+                    sh 'aws eks --region us-east-2 update-kubeconfig --name kubernetes-cluster'
                 }
-                sh 'export KUBECONFIG=~/.kube/kubernetes'
+                sh 'export KUBECONFIG=~/.kube/kubernetes-cluster'
                 sh 'kubectl config use-context'
                 sh 'kubectl get svc'
             }
