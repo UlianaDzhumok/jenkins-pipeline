@@ -43,6 +43,7 @@ pipeline {
                 sh 'sudo apt-get install -y kubectl'
                 sh 'sudo apt-get install ansible'
                 sh 'pip3 install boto'
+                sh 'pip3 install botocore'
                 sh 'ansible-playbook -i inventory main.yml'
             }
          }
