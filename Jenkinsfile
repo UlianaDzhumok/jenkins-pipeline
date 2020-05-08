@@ -1,6 +1,6 @@
 pipeline {
      environment {
-        registry = "udzhumok/dog-classifier:demo"
+        registry = "udzhumok/dog-classifier"
         registryCredential = 'DockerHub'
         dockerImage = ''
      }
