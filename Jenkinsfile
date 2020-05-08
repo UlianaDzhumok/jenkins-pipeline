@@ -10,7 +10,7 @@ pipeline {
          stage('Code Analysis') {
              steps {
                  sh 'make lint'
-                 aquaMicroscanner imageName: 'alpine:latest', notCompleted: 'exit 1', onDisallowed: 'fail'
+                 aquaMicroscanner imageName: 'alpine:latest', notCompliesCmd: 'exit 1', onDisallowed: 'fail', outputFormat: 'json'
              }
          }             
      }
