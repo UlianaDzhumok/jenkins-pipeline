@@ -1,5 +1,5 @@
 # Imports python modules
-from time import time, sleep
+from time import time
 
 # Imports python modules to work with directories
 from os import listdir, path
@@ -452,7 +452,7 @@ def main():
     results = get_pet_labels(in_arg.dir)
 
     # Function that checks Pet Images in the results Dictionary using results     
-    #check_creating_pet_image_labels(results)
+    check_creating_pet_image_labels(results)
 
 
     # Classify_images function within the file classiy_images.py
@@ -466,7 +466,7 @@ def main():
     classify_images(in_arg.dir, results)
 
     # Function that checks Results Dictionary using results     
-    #check_classifying_images(results)    
+    check_classifying_images(results)    
 
     # Adjust_results4_isadog function within the file adjust_results4_isadog.py
     # Once the adjust_results4_isadog function has been defined replace 'None' 
@@ -479,7 +479,7 @@ def main():
     adjust_results4_isadog(results)
 
     # Function that checks Results Dictionary for is-a-dog adjustment using results
-    #check_classifying_labels_as_dogs(results)
+    check_classifying_labels_as_dogs(results)
 
     # Calculates_results_stats function within the file calculates_results_stats.py
     # This function creates the results statistics dictionary that contains a
@@ -497,7 +497,7 @@ def main():
     # Print_results function within the file print_results.py
     # Prints summary results, incorrect classifications of dogs (if requested)
     # and incorrectly classified breeds (if requested)
-    #print_results(results, results_stats, "resnet", True, True)
+    print_results(results, results_stats, "resnet", True, True)
     
     # Measure total program runtime by collecting end time & prints it in hh:mm:ss format
     end_time = time()
